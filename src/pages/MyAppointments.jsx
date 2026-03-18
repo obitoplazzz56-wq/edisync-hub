@@ -1,12 +1,11 @@
 import React from 'react';
-import { useAuth } from '../contexts/AuthContext';
-import { mockAppointments } from '../services/mockData';
+import { useAuth } from '../contexts/AuthContext.jsx';
+import { mockAppointments } from '../services/mockData.js';
 
-const MyAppointments: React.FC = () => {
+const MyAppointments = () => {
   const { user } = useAuth();
   if (!user) return null;
 
-  // For patients, filter by patient_id=1 (demo); for doctors, filter by doctor_id
   const appointments = user.role === 'patient'
     ? mockAppointments.filter(a => a.patient_id === 1)
     : mockAppointments.filter(a => a.doctor_id === user.id);

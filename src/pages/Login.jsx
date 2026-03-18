@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../contexts/AuthContext.jsx';
 import Swal from 'sweetalert2';
 import '../styles/login.css';
 
@@ -13,14 +13,14 @@ const demoAccounts = [
   { label: 'Patient', username: 'patient1', password: 'patient123' },
 ];
 
-const Login: React.FC = () => {
+const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!username.trim() || !password.trim()) {
       Swal.fire({ icon: 'warning', title: 'Validation Error', text: 'Please enter both username and password.' });
@@ -36,7 +36,7 @@ const Login: React.FC = () => {
     }
   };
 
-  const fillDemo = (u: string, p: string) => {
+  const fillDemo = (u, p) => {
     setUsername(u);
     setPassword(p);
   };

@@ -1,24 +1,22 @@
 import React, { useState } from 'react';
-import { mockTreatments, mockAppointments, demoUsers, type Treatment } from '../services/mockData';
+import { mockTreatments, mockAppointments, demoUsers } from '../services/mockData.js';
 import Swal from 'sweetalert2';
 
-const doctors = demoUsers.filter(u => u.role === 'doctor');
-
-const Treatments: React.FC = () => {
-  const [treatments, setTreatments] = useState<Treatment[]>(mockTreatments);
+const Treatments = () => {
+  const [treatments, setTreatments] = useState(mockTreatments);
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({
     appointment_id: '', diagnosis: '', medicines: '', notes: '',
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (!form.appointment_id || !form.diagnosis.trim()) {
       Swal.fire({ icon: 'warning', title: 'Required', text: 'Appointment and diagnosis are required.' });
       return;
     }
     const appt = mockAppointments.find(a => a.id === Number(form.appointment_id));
-    const newTreatment: Treatment = {
+    const newTreatment = {
       id: Math.max(...treatments.map(t => t.id), 0) + 1,
       appointment_id: Number(form.appointment_id),
       patient_name: appt?.patient_name || 'Unknown',
@@ -35,8 +33,8 @@ const Treatments: React.FC = () => {
     Swal.fire({ icon: 'success', title: 'Created', text: 'Treatment recorded.', timer: 1500, showConfirmButton: false });
   };
 
-  const markComplete = (id: number) => {
-    setTreatments(prev => prev.map(t => t.id === id ? { ...t, status: 'Completed' as const } : t));
+  const markComplete = (id) => {
+    setTreatments(prev => prev.map(t => t.id === id ? { ...t, status: 'Completed' } : t));
     Swal.fire({ icon: 'success', title: 'Completed', timer: 1200, showConfirmButton: false });
   };
 

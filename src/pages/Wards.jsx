@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
-import { mockWards, mockAdmissions, mockPatients, type Admission } from '../services/mockData';
+import { mockWards, mockAdmissions, mockPatients } from '../services/mockData.js';
 import Swal from 'sweetalert2';
 
-const Wards: React.FC = () => {
-  const [admissions, setAdmissions] = useState<Admission[]>(mockAdmissions);
+const Wards = () => {
+  const [admissions, setAdmissions] = useState(mockAdmissions);
   const [showAdmitForm, setShowAdmitForm] = useState(false);
-  const [tab, setTab] = useState<'wards' | 'admissions'>('wards');
+  const [tab, setTab] = useState('wards');
 
   const [form, setForm] = useState({
     patient_id: '', ward_id: '', bed_number: '',
   });
 
-  const handleAdmit = (e: React.FormEvent) => {
+  const handleAdmit = (e) => {
     e.preventDefault();
     if (!form.patient_id || !form.ward_id || !form.bed_number.trim()) {
       Swal.fire({ icon: 'warning', title: 'Required', text: 'All fields are required.' });
@@ -19,7 +19,7 @@ const Wards: React.FC = () => {
     }
     const patient = mockPatients.find(p => p.id === Number(form.patient_id));
     const ward = mockWards.find(w => w.id === Number(form.ward_id));
-    const newAdm: Admission = {
+    const newAdm = {
       id: Math.max(...admissions.map(a => a.id), 0) + 1,
       patient_id: Number(form.patient_id),
       patient_name: patient ? `${patient.first_name} ${patient.last_name}` : 'Unknown',
@@ -36,7 +36,7 @@ const Wards: React.FC = () => {
     Swal.fire({ icon: 'success', title: 'Admitted', text: 'Patient admitted.', timer: 1500, showConfirmButton: false });
   };
 
-  const handleDischarge = (id: number) => {
+  const handleDischarge = (id) => {
     Swal.fire({
       title: 'Confirm Discharge',
       text: 'Discharge this patient?',
@@ -46,7 +46,7 @@ const Wards: React.FC = () => {
     }).then(result => {
       if (result.isConfirmed) {
         setAdmissions(prev => prev.map(a =>
-          a.id === id ? { ...a, status: 'Discharged' as const, discharged_date: new Date().toISOString().split('T')[0] } : a
+          a.id === id ? { ...a, status: 'Discharged', discharged_date: new Date().toISOString().split('T')[0] } : a
         ));
         Swal.fire({ icon: 'success', title: 'Discharged', timer: 1200, showConfirmButton: false });
       }

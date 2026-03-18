@@ -1,12 +1,8 @@
 import React from 'react';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../contexts/AuthContext.jsx';
 import '../styles/header.css';
 
-interface HeaderProps {
-  title?: string;
-}
-
-const Header: React.FC<HeaderProps> = ({ title }) => {
+const Header = ({ title }) => {
   const { user } = useAuth();
 
   return (

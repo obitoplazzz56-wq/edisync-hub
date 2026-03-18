@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { mockAppointments, mockPatients, demoUsers, type Appointment } from '../services/mockData';
+import { mockAppointments, mockPatients, demoUsers } from '../services/mockData.js';
 import Swal from 'sweetalert2';
 
 const doctors = demoUsers.filter(u => u.role === 'doctor');
 
-const Appointments: React.FC = () => {
-  const [appointments, setAppointments] = useState<Appointment[]>(mockAppointments);
+const Appointments = () => {
+  const [appointments, setAppointments] = useState(mockAppointments);
   const [showForm, setShowForm] = useState(false);
   const [filter, setFilter] = useState('All');
 
@@ -15,7 +15,7 @@ const Appointments: React.FC = () => {
 
   const filtered = filter === 'All' ? appointments : appointments.filter(a => a.status === filter);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (!form.patient_id || !form.doctor_id || !form.appointment_date || !form.appointment_time) {
       Swal.fire({ icon: 'warning', title: 'Required', text: 'Please fill all required fields.' });
@@ -23,7 +23,7 @@ const Appointments: React.FC = () => {
     }
     const patient = mockPatients.find(p => p.id === Number(form.patient_id));
     const doctor = doctors.find(d => d.id === Number(form.doctor_id));
-    const newAppt: Appointment = {
+    const newAppt = {
       id: Math.max(...appointments.map(a => a.id), 0) + 1,
       patient_id: Number(form.patient_id),
       patient_name: patient ? `${patient.first_name} ${patient.last_name}` : 'Unknown',
@@ -41,7 +41,7 @@ const Appointments: React.FC = () => {
     Swal.fire({ icon: 'success', title: 'Created', text: 'Appointment created.', timer: 1500, showConfirmButton: false });
   };
 
-  const updateStatus = (id: number, status: Appointment['status']) => {
+  const updateStatus = (id, status) => {
     setAppointments(prev => prev.map(a => a.id === id ? { ...a, status } : a));
     Swal.fire({ icon: 'success', title: 'Updated', timer: 1200, showConfirmButton: false });
   };

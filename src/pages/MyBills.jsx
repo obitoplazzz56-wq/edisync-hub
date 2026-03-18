@@ -1,8 +1,7 @@
 import React from 'react';
-import { mockBills } from '../services/mockData';
+import { mockBills } from '../services/mockData.js';
 
-const MyBills: React.FC = () => {
-  // Demo: show bills for patient_id=1
+const MyBills = () => {
   const bills = mockBills.filter(b => b.patient_id === 1);
   const totalOwed = bills.filter(b => b.status === 'Unpaid').reduce((s, b) => s + b.total, 0);
 

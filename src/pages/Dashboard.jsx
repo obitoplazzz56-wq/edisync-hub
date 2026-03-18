@@ -1,12 +1,12 @@
 import React from 'react';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../contexts/AuthContext.jsx';
 import {
   mockPatients, mockAppointments, mockBills, mockWards,
   mockDashboardStats, mockTreatments,
-} from '../services/mockData';
+} from '../services/mockData.js';
 import '../styles/dashboard.css';
 
-const Dashboard: React.FC = () => {
+const Dashboard = () => {
   const { user } = useAuth();
   if (!user) return null;
 
@@ -16,9 +16,7 @@ const Dashboard: React.FC = () => {
   return <StaffDashboard />;
 };
 
-const StatCard: React.FC<{ label: string; value: string | number; icon: string; color: string; trend?: string }> = ({
-  label, value, icon, color, trend,
-}) => (
+const StatCard = ({ label, value, icon, color, trend }) => (
   <div className="stat-card">
     <div className="stat-card-header">
       <span className="stat-label">{label}</span>
@@ -31,7 +29,7 @@ const StatCard: React.FC<{ label: string; value: string | number; icon: string; 
   </div>
 );
 
-const StaffDashboard: React.FC = () => {
+const StaffDashboard = () => {
   const stats = mockDashboardStats;
   const recentPatients = mockPatients.slice(0, 4);
   const upcomingAppts = mockAppointments.filter(a => a.status === 'Scheduled').slice(0, 5);
@@ -138,7 +136,7 @@ const StaffDashboard: React.FC = () => {
   );
 };
 
-const PatientDashboard: React.FC = () => {
+const PatientDashboard = () => {
   const upcomingAppts = mockAppointments.filter(a => a.status === 'Scheduled' && a.patient_id === 1).slice(0, 5);
   const recentTreatments = mockTreatments.filter(t => t.patient_name === 'John Doe').slice(0, 3);
   const pendingBills = mockBills.filter(b => b.patient_id === 1 && b.status === 'Unpaid');

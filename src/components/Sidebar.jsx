@@ -1,17 +1,9 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { useAuth, type UserRole } from '../contexts/AuthContext';
+import { useAuth } from '../contexts/AuthContext.jsx';
 import '../styles/sidebar.css';
 
-interface MenuItem {
-  label: string;
-  path: string;
-  roles: UserRole[];
-  icon: React.ReactNode;
-  section?: string;
-}
-
-const menuConfig: MenuItem[] = [
+const menuConfig = [
   {
     label: 'Dashboard', path: '/dashboard', section: 'Overview',
     roles: ['admin', 'doctor', 'nurse', 'reception', 'accounts', 'patient'],
@@ -64,7 +56,7 @@ const menuConfig: MenuItem[] = [
   },
 ];
 
-const Sidebar: React.FC = () => {
+const Sidebar = () => {
   const { user, logout } = useAuth();
   const location = useLocation();
 
@@ -72,8 +64,7 @@ const Sidebar: React.FC = () => {
 
   const filteredMenu = menuConfig.filter(item => item.roles.includes(user.role));
 
-  // Group by section
-  const sections: { [key: string]: MenuItem[] } = {};
+  const sections = {};
   filteredMenu.forEach(item => {
     const sec = item.section || 'General';
     if (!sections[sec]) sections[sec] = [];

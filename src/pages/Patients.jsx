@@ -1,28 +1,28 @@
 import React, { useState } from 'react';
-import { mockPatients, type Patient } from '../services/mockData';
+import { mockPatients } from '../services/mockData.js';
 import Swal from 'sweetalert2';
 
-const emptyPatient = (): Omit<Patient, 'id'> => ({
+const emptyPatient = () => ({
   first_name: '', last_name: '', gender: 'Male', dob: '', phone: '', email: '',
   address: '', blood_group: 'A+', emergency_contact: '', status: 'Outpatient',
 });
 
-const Patients: React.FC = () => {
-  const [patients, setPatients] = useState<Patient[]>(mockPatients);
+const Patients = () => {
+  const [patients, setPatients] = useState(mockPatients);
   const [search, setSearch] = useState('');
   const [showForm, setShowForm] = useState(false);
-  const [form, setForm] = useState<Omit<Patient, 'id'>>(emptyPatient());
-  const [editId, setEditId] = useState<number | null>(null);
+  const [form, setForm] = useState(emptyPatient());
+  const [editId, setEditId] = useState(null);
 
   const filtered = patients.filter(p =>
     `${p.first_name} ${p.last_name} ${p.phone} ${p.email}`.toLowerCase().includes(search.toLowerCase())
   );
 
-  const handleChange = (field: string, value: string) => {
+  const handleChange = (field, value) => {
     setForm(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (!form.first_name.trim() || !form.last_name.trim()) {
       Swal.fire({ icon: 'warning', title: 'Required', text: 'First and last name are required.' });
@@ -41,14 +41,14 @@ const Patients: React.FC = () => {
     setEditId(null);
   };
 
-  const handleEdit = (p: Patient) => {
+  const handleEdit = (p) => {
     const { id, ...rest } = p;
     setForm(rest);
     setEditId(id);
     setShowForm(true);
   };
 
-  const handleDelete = (id: number) => {
+  const handleDelete = (id) => {
     Swal.fire({
       title: 'Confirm Deletion',
       text: 'This action cannot be undone.',
@@ -140,7 +140,7 @@ const Patients: React.FC = () => {
                 </div>
                 <div className="form-group">
                   <label className="form-label">Status</label>
-                  <select className="form-select" value={form.status} onChange={e => handleChange('status', e.target.value as Patient['status'])}>
+                  <select className="form-select" value={form.status} onChange={e => handleChange('status', e.target.value)}>
                     <option>Outpatient</option><option>Inpatient</option><option>Discharged</option>
                   </select>
                 </div>

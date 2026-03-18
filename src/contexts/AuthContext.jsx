@@ -1,14 +1,7 @@
-import React, { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from 'react';
-import { demoUsers, type User, type UserRole } from '../services/mockData';
+import React, { createContext, useContext, useState, useCallback } from 'react';
+import { demoUsers } from '../services/mockData.js';
 
-interface AuthContextType {
-  user: User | null;
-  isAuthenticated: boolean;
-  login: (username: string, password: string) => Promise<boolean>;
-  logout: () => void;
-}
-
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const AuthContext = createContext(undefined);
 
 export const useAuth = () => {
   const ctx = useContext(AuthContext);
@@ -16,16 +9,16 @@ export const useAuth = () => {
   return ctx;
 };
 
-export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(() => {
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(() => {
     const stored = localStorage.getItem('user');
     return stored ? JSON.parse(stored) : null;
   });
 
   const isAuthenticated = !!user;
 
-  const login = useCallback(async (username: string, password: string): Promise<boolean> => {
-    // In production, this calls your Express API:
+  const login = useCallback(async (username, password) => {
+    // In production, call your Express API:
     // const res = await api.post('/auth/login', { username, password });
     // localStorage.setItem('token', res.data.token);
     // localStorage.setItem('user', JSON.stringify(res.data.user));
@@ -54,5 +47,3 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     </AuthContext.Provider>
   );
 };
-
-export type { UserRole, User };

@@ -1,12 +1,11 @@
 import React from 'react';
-import { useAuth } from '../contexts/AuthContext';
-import { mockPatients, demoUsers } from '../services/mockData';
+import { useAuth } from '../contexts/AuthContext.jsx';
+import { mockPatients } from '../services/mockData.js';
 
-const Profile: React.FC = () => {
+const Profile = () => {
   const { user } = useAuth();
   if (!user) return null;
 
-  // For patient role, show patient data; for staff, show user data
   const isPatient = user.role === 'patient';
   const patientData = isPatient ? mockPatients.find(p => p.email === user.email) : null;
 

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { mockBills, mockPatients, type Bill } from '../services/mockData';
+import { mockBills, mockPatients } from '../services/mockData.js';
 import Swal from 'sweetalert2';
 
-const Billing: React.FC = () => {
-  const [bills, setBills] = useState<Bill[]>(mockBills);
+const Billing = () => {
+  const [bills, setBills] = useState(mockBills);
   const [showForm, setShowForm] = useState(false);
   const [filter, setFilter] = useState('All');
 
@@ -14,7 +14,7 @@ const Billing: React.FC = () => {
   const filtered = filter === 'All' ? bills : bills.filter(b => b.status === filter);
   const totalUnpaid = bills.filter(b => b.status === 'Unpaid').reduce((s, b) => s + b.total, 0);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (!form.patient_id) {
       Swal.fire({ icon: 'warning', title: 'Required', text: 'Select a patient.' });
@@ -24,7 +24,7 @@ const Billing: React.FC = () => {
     const c = Number(form.consultation_fee) || 0;
     const m = Number(form.medicine_fee) || 0;
     const r = Number(form.room_fee) || 0;
-    const newBill: Bill = {
+    const newBill = {
       id: Math.max(...bills.map(b => b.id), 0) + 1,
       patient_id: Number(form.patient_id),
       patient_name: patient ? `${patient.first_name} ${patient.last_name}` : 'Unknown',
@@ -41,8 +41,8 @@ const Billing: React.FC = () => {
     Swal.fire({ icon: 'success', title: 'Bill Generated', timer: 1500, showConfirmButton: false });
   };
 
-  const markPaid = (id: number) => {
-    setBills(prev => prev.map(b => b.id === id ? { ...b, status: 'Paid' as const } : b));
+  const markPaid = (id) => {
+    setBills(prev => prev.map(b => b.id === id ? { ...b, status: 'Paid' } : b));
     Swal.fire({ icon: 'success', title: 'Marked as Paid', timer: 1200, showConfirmButton: false });
   };
 

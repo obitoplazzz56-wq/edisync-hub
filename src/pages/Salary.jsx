@@ -1,22 +1,22 @@
 import React, { useState } from 'react';
-import { mockSalaries, demoUsers, type SalaryRecord } from '../services/mockData';
+import { mockSalaries, demoUsers } from '../services/mockData.js';
 import Swal from 'sweetalert2';
 
 const staffMembers = demoUsers.filter(u => u.role !== 'patient');
 
-const Salary: React.FC = () => {
-  const [salaries, setSalaries] = useState<SalaryRecord[]>(mockSalaries);
+const Salary = () => {
+  const [salaries, setSalaries] = useState(mockSalaries);
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({ staff_id: '', amount: '', month: '' });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (!form.staff_id || !form.amount || !form.month) {
       Swal.fire({ icon: 'warning', title: 'Required', text: 'All fields are required.' });
       return;
     }
     const staff = staffMembers.find(s => s.id === Number(form.staff_id));
-    const newSalary: SalaryRecord = {
+    const newSalary = {
       id: Math.max(...salaries.map(s => s.id), 0) + 1,
       staff_id: Number(form.staff_id),
       staff_name: staff?.full_name || 'Unknown',
@@ -32,9 +32,9 @@ const Salary: React.FC = () => {
     Swal.fire({ icon: 'success', title: 'Salary Processed', timer: 1500, showConfirmButton: false });
   };
 
-  const markPaid = (id: number) => {
+  const markPaid = (id) => {
     setSalaries(prev => prev.map(s =>
-      s.id === id ? { ...s, status: 'Paid' as const, paid_date: new Date().toISOString().split('T')[0] } : s
+      s.id === id ? { ...s, status: 'Paid', paid_date: new Date().toISOString().split('T')[0] } : s
     ));
     Swal.fire({ icon: 'success', title: 'Marked as Paid', timer: 1200, showConfirmButton: false });
   };

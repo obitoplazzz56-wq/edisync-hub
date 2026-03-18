@@ -1,19 +1,19 @@
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
-import { AuthProvider } from './contexts/AuthContext';
-import ProtectedRoute from './components/ProtectedRoute';
-import Layout from './components/Layout';
-import Login from './pages/Login';
-import Dashboard from './pages/Dashboard';
-import Patients from './pages/Patients';
-import Appointments from './pages/Appointments';
-import Treatments from './pages/Treatments';
-import Wards from './pages/Wards';
-import Billing from './pages/Billing';
-import Salary from './pages/Salary';
-import Profile from './pages/Profile';
-import MyAppointments from './pages/MyAppointments';
-import MyBills from './pages/MyBills';
-import NotFound from './pages/NotFound';
+import { AuthProvider } from './contexts/AuthContext.jsx';
+import ProtectedRoute from './components/ProtectedRoute.jsx';
+import Layout from './components/Layout.jsx';
+import Login from './pages/Login.jsx';
+import Dashboard from './pages/Dashboard.jsx';
+import Patients from './pages/Patients.jsx';
+import Appointments from './pages/Appointments.jsx';
+import Treatments from './pages/Treatments.jsx';
+import Wards from './pages/Wards.jsx';
+import Billing from './pages/Billing.jsx';
+import Salary from './pages/Salary.jsx';
+import Profile from './pages/Profile.jsx';
+import MyAppointments from './pages/MyAppointments.jsx';
+import MyBills from './pages/MyBills.jsx';
+import NotFound from './pages/NotFound.jsx';
 
 const App = () => (
   <AuthProvider>
